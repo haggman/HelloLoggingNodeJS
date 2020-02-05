@@ -1,3 +1,6 @@
+# Hello Logging NodeJS
+This is a basic Hello World example written in NodeJS which uses Winston and the GCP plugin for Winston to do some basic logging in GCP
+
 ## Load the dependencies and test locally
 
 Install the dependencies
