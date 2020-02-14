@@ -35,7 +35,7 @@ gcloud run deploy hello-logging --image gcr.io/$PROJECT/hello-logging --region u
 ```
 
 ## Rebuilding the app
-Remember, if you change the code you'll have to save the change, Cloud Build the image into the GCR, and push a new Cloud Run revision
+Remember, if you change the code you'll have to save the change, Cloud Build the image into the GCR, and push a new Cloud Run revision. This command will fail if the $PROJECT env variable isn't set, FYI.
 
 ```
 gcloud builds submit --tag gcr.io/$PROJECT/hello-logging
