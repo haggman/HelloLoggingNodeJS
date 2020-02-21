@@ -1,6 +1,7 @@
 Dockerfile
-README.md
+readme.md
 node_modules
 *.log
 cloudbuld.yaml
 *.sh
+app.yaml

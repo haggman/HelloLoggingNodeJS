@@ -1,0 +1,41 @@
+# This file configures the HelloLoggingJS app which serves public web traffic.
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello-logging-js-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-logging
+  template:
+    metadata:
+      labels:
+        app: hello-logging
+    spec:
+      containers:
+      - name: hello-logging-js-containers
+        # Replace $GCLOUD_PROJECT with your project ID
+        image: gcr.io/$GCLOUD_PROJECT/hello-logging-js:latest
+        # This app listens on port 8080 for web traffic by default.
+        ports:
+        - containerPort: 8080
+        env:
+          - name: PORT
+            value: "8080"
+---
+
+# The hello-logging service provides a load-balancing proxy over the hello-logging
+# pods. By specifying the type as a 'LoadBalancer', Kubernetes Engine will
+# create an external HTTP load balancer.
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-logging-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: hello-logging
+  ports:
+  - port: 80
+    targetPort: 8080
