@@ -1,2 +1,0 @@
-gcloud beta compute --project=$GOOGLE_CLOUD_PROJECT instances create load-generator-vm --zone=us-central1-a --machine-type=n1-standard-1
-gcloud compute  scp --zone=us-central1-a --quiet loadService.sh load-generator-vm:~

@@ -36,6 +36,7 @@ const logger = winston.createLogger({
 });
 
 //A classic Hello World, not using our logger
+//but it is doing a classic console.log
 app.get('/', (req, res) => {
   console.log('/ version of Hello world received a request');
 
@@ -54,7 +55,7 @@ app.get('/log', (req, res) => {
 app.get('/score', (req, res) => {
   //Random score, the contaierID is a UUID unique to each
   //runtime container (testing was done in Cloud Run). 
-  //funFactor is a random number 1-10
+  //funFactor is a random number 1-100
      let score = Math.floor(Math.random() * 100) + 1;
   //Using the Winston logging library with GCP extension
   logger.info(`/score called`, {score:""+score, containerID:containerID, 
@@ -81,6 +82,15 @@ app.get('/error', (req, res) => {
 //Uncaught exception, auto reported
 app.get('/uncaught', (req, res) => {
   doesNotExist();
+ res.send("Broken now, come back later.")
+});
+
+//Generates an uncaught exception every 1000 requests
+app.get('/random-error', (req, res) => {
+  let errorNum = (Math.floor(Math.random() * 1000) + 1);
+  if (errorNum==13) {
+    doesNotExist();
+  }
  res.send("Broken now, come back later.")
 });
 
