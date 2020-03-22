@@ -91,7 +91,7 @@ app.get('/random-error', (req, res) => {
   if (errorNum==13) {
     doesNotExist();
   }
- res.send("Broken now, come back later.")
+ res.send("Worked this time.")
 });
 
 
