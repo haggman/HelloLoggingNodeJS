@@ -25,7 +25,7 @@ Use Cloud Build to build the Docker image and push to GCR
 
 ```
 export PROJECT=$(gcloud config list --format 'value(core.project)')
-gcloud builds submit --tag gcr.io/$PROJECT/hello-logging
+gcloud builds submit . --tag gcr.io/$PROJECT/hello-logging
 ```
 
 Now create a new Cloud Run app named *hello-logging* based on the just pushed image
