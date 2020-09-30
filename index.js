@@ -3,10 +3,11 @@ const express = require('express');
 const app = express();
 app.disable('etag'); //so it will return 200 and 304 etc. codes.
 
-//Enable Error Reporting
+//Enable Debugger
 require('@google-cloud/debug-agent').start(
   {serviceContext: {enableCanary: false}});
 
+//Enable Error Reporting
 // Import the GCP ErrorReporting library
 const {ErrorReporting} = require('@google-cloud/error-reporting');
 
