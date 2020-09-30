@@ -84,7 +84,7 @@ app.get('/random-error', (req, res) => {
 });
 
 // Note that express error handling middleware should be attached after all
-// the other routes and use() calls. See [express docs][express-error-docs].
+// the other routes and use() calls. 
 app.use(errors.express);
 
 const port = process.env.PORT || 8080;
