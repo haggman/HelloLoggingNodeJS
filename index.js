@@ -11,6 +11,14 @@ const errors = new ErrorReporting({
   reportMode: 'always' //as opposed to only while in production
 });
 
+//Setup a listener to catch all uncaught exceptions
+process.on('uncaughtException', (e) => {
+    // Write the error to stderr.
+    console.error(e);
+    // Report that same error the Error Service
+    errors.report(e);
+});
+
 const { v1: uuidv1 } = require('uuid');
 const containerID = uuidv1();
 
@@ -75,6 +83,9 @@ app.get('/random-error', (req, res) => {
  res.send("Worked this time.")
 });
 
+// Note that express error handling middleware should be attached after all
+// the other routes and use() calls. See [express docs][express-error-docs].
+app.use(errors.express);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
