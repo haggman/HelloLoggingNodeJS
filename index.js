@@ -71,7 +71,7 @@ app.get('/score', (req, res) => {
   console.log(`/score called, score:${score}, containerID:${containerID}, funFactor:${funFactor}`);
     //Basic message back to browser
   res.send(`Your score is a ${score}. Happy?`);
-  });
+});
   
 
 //Manually report an error
