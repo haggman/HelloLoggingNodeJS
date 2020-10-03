@@ -69,7 +69,8 @@ app.get('/score', (req, res) => {
   let score = Math.floor(Math.random() * 100) + 1;
   
   console.log(`/score called, score:${score}, containerID:${containerID}, funFactor:${funFactor}`);
-    //Basic message back to browser
+  
+  //Basic message back to browser
   res.send(`Your score is a ${score}. Happy?`);
 });
   
