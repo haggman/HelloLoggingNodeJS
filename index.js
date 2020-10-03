@@ -24,6 +24,22 @@ process.on('uncaughtException', (e) => {
     errors.report(e);
 });
 
+//setup a Winston logger adding GCP support
+const winston = require('winston');
+//Here's the GCP addon
+const {LoggingWinston} = require('@google-cloud/logging-winston');
+const loggingWinston = new LoggingWinston();
+
+// Create a Winston logger that streams to GCP Logging
+// Logs will be written to: "projects/YOUR_PROJECT_ID/logs/winston_log"
+const logger = winston.createLogger({
+  level: 'info', //default logging level
+  transports: [
+    // Add GCP Logging
+    loggingWinston,
+  ],
+});
+
 const { v1: uuidv1 } = require('uuid');
 const containerID = uuidv1();
 
@@ -40,7 +56,7 @@ app.get('/', (req, res) => {
 
 //Another classic Hello World, this one using Winston to GCP
 app.get('/log', (req, res) => {
-  console.log("/log version of Hello World received a request")
+  logger.info("/log version of Hello World received a request")
   const target = process.env.TARGET || 'World';
   res.send(`Hello ${target}, from /log!`);
 });
