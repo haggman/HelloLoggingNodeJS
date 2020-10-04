@@ -1,3 +1,6 @@
+//Setup for tracing
+const tracer = require('@google-cloud/trace-agent').start();
+
 //Load the express server
 const express = require('express');
 const app = express();
@@ -40,6 +43,8 @@ const logger = winston.createLogger({
   ],
 });
 
+
+//Setup some values used later in code
 const { v1: uuidv1 } = require('uuid');
 const containerID = uuidv1();
 
@@ -104,6 +109,44 @@ app.get('/random-error', (req, res) => {
   }
  res.send("Worked this time.")
 });
+
+//Generates a slow request
+app.get('/slow', (req, res) => {
+    let pi1=slowPi();
+
+    let pi2=slowPi2();
+    res.send(`Took it's time. pi to 1,000 places: ${pi1}, pi to 100,000 places: ${pi2}`);
+});
+
+function slowPi(){
+    let pi = piCalc(1000n);
+    console.log(`How's this pi? ${pi}`);
+    return pi;
+}
+
+function slowPi2(){
+    let pi = piCalc(100000n);
+    console.log(`A better pi? ${pi}`)
+    return pi;
+}
+
+//Use one of the many techniques to calculate 
+//pi to "count" places. This is a variation of
+//Ramanujan's formula.
+function piCalc(count){
+    let i = 1n;
+    count = count + 20n
+    let x = 3n * (10n ** count);
+    let pi = x;
+    while (x > 0) {
+            x = x * i / ((i + 1n) * 4n);
+            pi += x / (i + 2n);
+            i += 2n;
+    }
+    pi = pi / (10n ** 20n);
+    console.log(pi);
+    return pi;
+}
 
 // Note that express error handling middleware should be attached after all
 // the other routes and use() calls. 
