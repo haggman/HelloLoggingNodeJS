@@ -1,5 +1,5 @@
 # This file configures the HelloLoggingJS app which serves public web traffic.
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: hello-logging-js-deployment
