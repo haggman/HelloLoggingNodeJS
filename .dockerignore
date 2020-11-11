@@ -5,3 +5,5 @@ node_modules
 cloudbuld.yaml
 *.sh
 app.yaml
+package-lock.json
+.gitignore
