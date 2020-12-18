@@ -16,7 +16,7 @@ spec:
       containers:
       - name: hello-logging-container
         # Replace $GOOGLE_CLOUD_PROJECT with your project ID
-        image: gcr.io/$GOOGLE_CLOUD_PROJECT/hello-logging
+        image: gcr.io/$GOOGLE_CLOUD_PROJECT/hello-logging:latest
         # This app listens on port 8080 for web traffic by default.
         ports:
         - containerPort: 8080
