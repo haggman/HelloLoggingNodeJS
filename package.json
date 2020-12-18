@@ -12,6 +12,7 @@
     "@google-cloud/debug-agent": "^5.1.2",
     "@google-cloud/error-reporting": "^2.0.0",
     "@google-cloud/logging-winston": "^4.0.0",
+    "@google-cloud/profiler": "^4.1.0",
     "@google-cloud/trace-agent": "^5.1.1",
     "express": "^4.17.1",
     "uuid": "^8.3.0",

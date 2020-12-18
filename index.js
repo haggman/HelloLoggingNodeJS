@@ -1,22 +1,30 @@
+//This is a simple NodeJS app designed to explore vairous Google Cloud
+//operations suite products
+
 //Setup for tracing
 const tracer = require('@google-cloud/trace-agent').start();
 
-//Load the express server
-const express = require('express');
-const app = express();
-app.disable('etag'); //so it will return 200 and 304 etc. codes.
-
 //Enable Debugger
 require('@google-cloud/debug-agent').start(
-  {serviceContext: {enableCanary: false}});
+  {serviceContext: {
+      enableCanary: false,
+      service: 'hello-logging-js',  //This is mostly for GKE. 
+      version: '1.0'                //set from env vars IRL
+      }});
 
-//Enable Error Reporting
+// Enable Error Reporting
 // Import the GCP ErrorReporting library
 const {ErrorReporting} = require('@google-cloud/error-reporting');
-
-// Get ready to talk to the Error Reporting GCP Service
 const errors = new ErrorReporting({
   reportMode: 'always' //as opposed to only while in production
+});
+
+// Enable the Profiler
+require('@google-cloud/profiler').start({
+  serviceContext: {
+    service: 'hello-logging-js',
+    version: '1.0',
+  },
 });
 
 //Setup a listener to catch all uncaught exceptions
@@ -27,14 +35,13 @@ process.on('uncaughtException', (e) => {
     errors.report(e);
 });
 
-//setup a Winston logger adding GCP support
+//Setup a Winston logger adding GCP support
+//Not a best practice, but some coders still prefer
+//using logging libraries
 const winston = require('winston');
 //Here's the GCP addon
 const {LoggingWinston} = require('@google-cloud/logging-winston');
 const loggingWinston = new LoggingWinston();
-
-// Create a Winston logger that streams to GCP Logging
-// Logs will be written to: "projects/YOUR_PROJECT_ID/logs/winston_log"
 const logger = winston.createLogger({
   level: 'info', //default logging level
   transports: [
@@ -43,12 +50,20 @@ const logger = winston.createLogger({
   ],
 });
 
+//Load the express server
+const express = require('express');
+const app = express();
+app.disable('etag'); //so it will return 200 and 304 etc. codes.
 
 //Setup some values used later in code
 const { v1: uuidv1 } = require('uuid');
 const containerID = uuidv1();
-
 const funFactor = Math.floor(Math.random() * 5) + 1; //just for fun
+
+// ******
+// The web routes start here
+// ******
+
 
 //A classic Hello World, not using our logger
 //but it is doing a classic console.log
@@ -103,7 +118,7 @@ app.get('/uncaught', (req, res) => {
 
 //Generates an uncaught exception every 1000 requests
 app.get('/random-error', (req, res) => {
-  let errorNum = (Math.floor(Math.random() * 1000) + 1);
+  let errorNum = (Math.floor(Math.random() * 100) + 1);
   if (errorNum==13) {
     doesNotExist();
   }
@@ -111,10 +126,15 @@ app.get('/random-error', (req, res) => {
 });
 
 //Generates a slow request
+//If you wanted more trace detail, you could use tracer and create some 
+//extra spans, like
+//const customSpan1 = tracer.createChildSpan({name: 'slowPi'});
+//customSpan1.endSpan();
 app.get('/slow', (req, res) => {
     let pi1=slowPi();
 
     let pi2=slowPi2();
+
     res.send(`Took it's time. pi to 1,000 places: ${pi1}, pi to 100,000 places: ${pi2}`);
 });
 
