@@ -64,7 +64,7 @@ gcloud app deploy
 
 ## GKE
 
-If you'd like to deploy to GKE, make sure you have the appropriate permissions enabled on the cluster (see note at top of this file. There's a `k8sapp.yaml` containing configurations to create a Deployment, and build a LoadBalancer for it. You will need to edit the file before applying to set the proper path to the container in GCR. The simply apply the file:
+If you'd like to deploy to GKE, make sure you have the appropriate permissions enabled on the cluster (see note at top of this file). There's a `k8sapp.yaml` containing configurations to create a Deployment, and build a LoadBalancer for it. You will need to edit the file before applying to set the proper path to the container in GCR. The simply apply the file:
 
 ``` bash
 kubectl apply -f k8sapp.yaml
