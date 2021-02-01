@@ -86,7 +86,7 @@ app.get('/score', (req, res) => {
   //Random score, the contaierID is a UUID unique to each
   //runtime container (testing was done in Cloud Run). 
   //funFactor is a random number 1-100
-  let score = Math.floor(Math.random() * 1000) + 1;
+  let score = Math.floor(Math.random() * 100) + 1;
   
   console.log(`/score called, score:${score}, containerID:${containerID}, funFactor:${funFactor}`);
   
