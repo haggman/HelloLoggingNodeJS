@@ -16,13 +16,20 @@ spec:
       containers:
       - name: hello-logging-container
         # Replace $GOOGLE_CLOUD_PROJECT with your project ID
-        image: gcr.io/$GOOGLE_CLOUD_PROJECT/hello-logging:latest
+        image: gcr.io/$GOOGLE_CLOUD_PROJECT/hello-logging:1.0
         # This app listens on port 8080 for web traffic by default.
         ports:
         - containerPort: 8080
         env:
           - name: PORT
             value: "8080"
+        resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 200m
+              memory: 256Mi
 ---
 
 # The hello-logging service provides a load-balancing proxy over the hello-logging

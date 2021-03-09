@@ -1,4 +1,4 @@
-//This is a simple NodeJS app designed to explore vairous Google Cloud
+//This is a simple NodeJS app designed to explore various Google Cloud
 //operations suite products
 
 //Setup for tracing
@@ -16,7 +16,11 @@ require('@google-cloud/debug-agent').start(
 // Import the GCP ErrorReporting library
 const {ErrorReporting} = require('@google-cloud/error-reporting');
 const errors = new ErrorReporting({
-  reportMode: 'always' //as opposed to only while in production
+  reportMode: 'always', //as opposed to only while in production
+  serviceContext: {
+    service: 'hello-logging-js',
+    version: '1.0',
+  }
 });
 
 // Enable the Profiler
@@ -120,9 +124,11 @@ app.get('/uncaught', (req, res) => {
 app.get('/random-error', (req, res) => {
   let errorNum = (Math.floor(Math.random() * 1000) + 1);
   if (errorNum==13) {
+    console.log("Called /random-error, and it's about to error");
     doesNotExist();
   }
- res.send("Worked this time.")
+ console.log("Called /random-error, and it worked");
+ res.send("Worked this time.");
 });
 
 //Generates a slow request
