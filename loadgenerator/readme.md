@@ -1,6 +1,6 @@
 # Load Generator
 
-This is a basic containerized application which uses Locust to generate load on the main Hello Logging Nodejs app's /random-error route. It assumes that you have already deployed HelloLoggingJS to the same Kubernetes cluster where you will deploy the load generator.
+This is a basic containerized application that uses Locust to generate load on the main Hello Logging Nodejs app's /random-error route, by default. It assumes that you have already deployed HelloLoggingJS to the same Kubernetes cluster where you will deploy the load generator. It will generate a starting load of approximately 30 requests per second. 
 
 ## Building and deploying the load generator to Container Registry
 
@@ -24,4 +24,4 @@ kubectl apply -f k8s-loadgen.yaml
 
 ## Customizing load generation
 
-By default, the load generator throws load on the /random-error path of the HelloLoggingJS application. In the `k8s-loadgen.yaml` file, you can change the `APP_ROUTE` env variable to redirect traffic to a different route. You can also change the simulated number of `USERS`, and the `replicas` to increase or decrease load.
+By default, the load generator throws load on the `/random-error` path of the HelloLoggingJS application. In the `k8s-loadgen.yaml` file, you can change the `APP_ROUTE` env variable to redirect traffic to a different route. You can also change the simulated number of `USERS`, and the `replicas` to increase or decrease the load. Each user generates a request per second.
