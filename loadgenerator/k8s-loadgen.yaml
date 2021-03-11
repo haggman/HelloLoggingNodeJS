@@ -23,9 +23,10 @@ spec:
         image: gcr.io/...
         env:
         - name: FRONTEND_ADDR
-          value: "hello-logging-service:80"
+          value: "http://hello-logging-service:80"
         - name: APP_ROUTE
           value: "/random-error"
+        # Current configuration will generate 1 RPS per user, per pod
         - name: USERS
           value: "30"
         resources:

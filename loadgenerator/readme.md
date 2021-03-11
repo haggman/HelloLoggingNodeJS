@@ -24,4 +24,4 @@ kubectl apply -f k8s-loadgen.yaml
 
 ## Customizing load generation
 
-By default, the load generator throws load on the `/random-error` path of the HelloLoggingJS application. In the `k8s-loadgen.yaml` file, you can change the `APP_ROUTE` env variable to redirect traffic to a different route. You can also change the simulated number of `USERS`, and the `replicas` to increase or decrease the load. Each user generates a request per second.
+By default, the load generator throws load on the `/random-error` path of the HelloLoggingJS application. In the `k8s-loadgen.yaml` file, you can change the `APP_ROUTE` env variable to redirect traffic to a different route. You can also change the simulated number of `USERS`, and the `replicas` to increase or decrease the load. Each user generates a request per second. If you like, you can also update the `FRONTEND_ADDR` to throw load on a totally different application. 
