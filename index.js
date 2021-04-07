@@ -124,7 +124,7 @@ app.get('/uncaught', (req, res) => {
 //Generates an uncaught exception every 1000 requests
 app.get('/random-error', (req, res) => {
   let errorNum = (Math.floor(Math.random() * 1000) + 1);
-  if (errorNum==13) {
+  if (errorNum==1) {
     console.log("Called /random-error, and it's about to error");
     doesNotExist();
   }
