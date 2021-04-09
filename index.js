@@ -6,7 +6,7 @@ const tracer = require('@google-cloud/trace-agent').start();
 
 //Enable Debugger
 require('@google-cloud/debug-agent').start(
-  { allowExpressions: true,         //So logpoint expressions will work
+  {
     serviceContext: {
       enableCanary: false,
       service: 'hello-logging-js',  //This is mostly for GKE. 
