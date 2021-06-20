@@ -143,7 +143,7 @@ app.get('/slow', (req, res) => {
 
     let pi2=slowPi2();
 
-    res.send(`Took it's time. pi to 1,000 places: ${pi1}, pi to 100,000 places: ${pi2}`);
+    res.send(`Took it's time. pi to 1,000 places: ${pi1}, pi to 10,000 places: ${pi2}`);
 });
 
 function slowPi(){
@@ -153,8 +153,8 @@ function slowPi(){
 }
 
 function slowPi2(){
-    let pi = piCalc(100000n);
-    console.log(`A better pi? ${pi}`)
+    let pi = piCalc(10000n);
+    console.log(`Here's a bigger pi? ${pi}`)
     return pi;
 }
 
