@@ -177,6 +177,13 @@ function piCalc(count){
     return pi;
 }
 
+// Expose the environment variables so these can demo ENV variable injection in Cloud Run, GKE etc
+app.get('/env', (req, res) => {
+  console.log(`Getting env vars`)
+  res.setHeader('content-type', 'text/plain');
+  res.send(JSON.stringify(process.env, null, 4))
+});
+
 // Note that express error handling middleware should be attached after all
 // the other routes and use() calls. 
 app.use(errors.express);
