@@ -18,6 +18,12 @@ Start the server
 npm start
 ```
 
+If you are running this on Google Cloud with the expectation that the libraries will work, please specify the project using:
+
+``` bash
+export GCLOUD_PROJECT=$DEVSHELL_PROJECT_ID
+```
+
 Test by visiting [http://localhost:8080](http://localhost:8080)
 
 If it's working, shut down the server (ctrl-c)
