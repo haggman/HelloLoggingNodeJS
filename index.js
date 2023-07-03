@@ -1,10 +1,33 @@
 //This is a simple NodeJS app designed to explore various Google Cloud
 //operations suite products
 
-//Setup for tracing
-const tracer = require('@google-cloud/trace-agent').start();
+// ******
+// Setting up Cloud Trace
+// ******
+// If using the older Cloud Trace API
+//const tracer = require('@google-cloud/trace-agent').start();
 
+//Using the newer OpenTelemetry API
+const opentelemetry = require("@opentelemetry/api");
+const { NodeTracerProvider } = require("@opentelemetry/sdk-trace-node");
+const { SimpleSpanProcessor, BatchSpanProcessor } = require("@opentelemetry/sdk-trace-base");
+const {
+  TraceExporter,
+} = require("@google-cloud/opentelemetry-cloud-trace-exporter");
+
+// Enable OpenTelemetry exporters to export traces to Google Cloud Trace.
+const provider = new NodeTracerProvider();
+
+// Initialize the exporter. When your application is running on Google Cloud,
+// you don't need to provide auth credentials or a project id.
+const exporter = new TraceExporter();
+
+// Configure the span processor to send spans to the exporter
+provider.addSpanProcessor(new BatchSpanProcessor(exporter));
+
+// ******
 // Enable Error Reporting
+// ******
 // Import the GCP ErrorReporting library
 const {ErrorReporting} = require('@google-cloud/error-reporting');
 const errors = new ErrorReporting({
@@ -15,7 +38,9 @@ const errors = new ErrorReporting({
   }
 });
 
+// ******
 // Enable the Profiler
+// ******
 require('@google-cloud/profiler').start({
   serviceContext: {
     service: 'hello-logging-js',
@@ -31,7 +56,9 @@ process.on('uncaughtException', (e) => {
     errors.report(e);
 });
 
-//Setup a Winston logger adding GCP support
+// ******
+// Setup a Winston logger adding GCP support
+// ******
 //Not a best practice, but some coders still prefer
 //using logging libraries
 const winston = require('winston');
@@ -46,7 +73,9 @@ const logger = winston.createLogger({
   ],
 });
 
+// ******
 //Load the express server
+// ******
 const express = require('express');
 const app = express();
 app.disable('etag'); //so it will return 200 and 304 etc. codes.
