@@ -17,11 +17,9 @@ const {
 
 // Enable OpenTelemetry exporters to export traces to Google Cloud Trace.
 const provider = new NodeTracerProvider();
-
 // Initialize the exporter. When your application is running on Google Cloud,
 // you don't need to provide auth credentials or a project id.
 const exporter = new TraceExporter();
-
 // Configure the span processor to send spans to the exporter
 provider.addSpanProcessor(new BatchSpanProcessor(exporter));
 
@@ -89,7 +87,6 @@ const funFactor = Math.floor(Math.random() * 5) + 1; //just for fun
 // The web routes start here
 // ******
 
-
 //A classic Hello World, not using our logger
 //but it is doing a classic console.log
 app.get('/', (req, res) => {
@@ -108,6 +105,7 @@ app.get('/log', (req, res) => {
 
 //Basic NodeJS app built with the express server
 app.get('/score', (req, res) => {
+  
   //Random score, the contaierID is a UUID unique to each
   //runtime container (testing was done in Cloud Run). 
   //funFactor is a random number 1-100
@@ -119,6 +117,24 @@ app.get('/score', (req, res) => {
   res.send(`Your score is a ${score}. Happy?`);
 });
   
+
+
+
+
+
+//Generates an uncaught exception every 1000 requests
+app.get('/random-error', (req, res) => {
+  error_rate = parseInt(req.query.error_rate) || 1000
+  let errorNum = (Math.floor(Math.random() * error_rate) + 1);
+  if (errorNum==1) {
+    console.log("Called /random-error, and it's about to error");
+    doesNotExist();
+  }
+ console.log("Called /random-error, and it worked");
+ res.send("Worked this time.");
+});
+
+
 
 //Manually report an error
 app.get('/error', (req, res) => {
@@ -139,18 +155,6 @@ app.get('/uncaught', (req, res) => {
   doesNotExist();
   //won't ever get to:
   res.send("Broken now, come back later.")
-});
-
-//Generates an uncaught exception every 1000 requests
-app.get('/random-error', (req, res) => {
-  error_rate = parseInt(req.query.error_rate) || 1000
-  let errorNum = (Math.floor(Math.random() * error_rate) + 1);
-  if (errorNum==1) {
-    console.log("Called /random-error, and it's about to error");
-    doesNotExist();
-  }
- console.log("Called /random-error, and it worked");
- res.send("Worked this time.");
 });
 
 //Generates a slow request
