@@ -124,7 +124,7 @@ app.get('/score', (req, res) => {
 
 //Generates an uncaught exception every 1000 requests
 app.get('/random-error', (req, res) => {
-  error_rate = parseInt(req.query.error_rate) || 1000
+  error_rate = parseInt(req.query.error_rate) || 20
   let errorNum = (Math.floor(Math.random() * error_rate) + 1);
   if (errorNum==1) {
     console.log("Called /random-error, and it's about to error");
