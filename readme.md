@@ -28,13 +28,12 @@ Test by visiting [http://localhost:8080](http://localhost:8080)
 
 If it's working, shut down the server (ctrl-c)
 
-## Building and deploying to Container Registry
+## Building and deploying to Artifact Registry
 
-Use Cloud Build to build the Docker image and push to GCR
+Use Cloud Build to build the Docker image and push to Artifact Registry. Use the buildContainer.sh script
 
 ``` bash
-export PROJECT=$(gcloud config list --format 'value(core.project)')
-gcloud builds submit . --tag gcr.io/$PROJECT/hello-logging
+. buildContainer.sh
 ```
 
 ## Running the app in Cloud Run
@@ -42,7 +41,7 @@ gcloud builds submit . --tag gcr.io/$PROJECT/hello-logging
 Now create a new Cloud Run app named *hello-logging* based on the just pushed image
 
 ``` bash
-gcloud run deploy hello-logging --image gcr.io/$PROJECT/hello-logging --region us-central1 --platform managed --quiet --allow-unauthenticated
+gcloud run deploy hello-logging --image us-docker.pkg.dev/${PROJECT}/demos/hello-operations-demo:latest --region us-central1 --platform managed --quiet --allow-unauthenticated
 ```
 
 ## Rebuilding the Cloud Run app
@@ -50,8 +49,8 @@ gcloud run deploy hello-logging --image gcr.io/$PROJECT/hello-logging --region u
 Remember, if you change the code you'll have to save the change, Cloud Build the image into the GCR, and push a new Cloud Run revision. This command will fail if the $PROJECT env variable isn't set, FYI.
 
 ``` bash
-gcloud builds submit --tag gcr.io/$PROJECT/hello-logging
-gcloud run deploy hello-logging --image gcr.io/$PROJECT/hello-logging --region us-central1 --platform managed --quiet --allow-unauthenticated
+. buildContainer.sh
+gcloud run deploy hello-logging --image us-docker.pkg.dev/${PROJECT}/demos/hello-operations-demo:latest --region us-central1 --platform managed --quiet --allow-unauthenticated
 ```
 
 ## Deploying to App Engine

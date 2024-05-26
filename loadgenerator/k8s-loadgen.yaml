@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: loadgenerator
+  name: loadgenerator-hw
 spec:
   selector:
     matchLabels:
-      app: loadgenerator
+      app: loadgenerator-hw
   replicas: 1
   template:
     metadata:
       labels:
-        app: loadgenerator
+        app: loadgenerator-hw
       annotations:
         sidecar.istio.io/rewriteAppHTTPProbers: "true"
     spec:
@@ -20,7 +20,7 @@ spec:
       containers:
       - name: main
         # Replace below with path to your load generator container
-        image: gcr.io/...
+        image: us-docker.pkg.dev/${PROJECT}/demos/hello-operations-demo:latest
         env:
         - name: FRONTEND_ADDR
           value: "http://hello-logging-service:80"
@@ -28,7 +28,7 @@ spec:
           value: "/random-error"
         # Current configuration will generate 1 RPS per user, per pod
         - name: USERS
-          value: "30"
+          value: "50"
         resources:
           requests:
             cpu: 300m

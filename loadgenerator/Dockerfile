@@ -12,24 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM python:3.8-slim as base
+FROM python:3.12.3-slim@sha256:2be8daddbb82756f7d1f2c7ece706aadcb284bf6ab6d769ea695cc3ed6016743 as base
 
 FROM base as builder
-
-RUN apt-get -qq update \
-    && apt-get install -y --no-install-recommends \
-        g++
 
 COPY requirements.txt .
 
 RUN pip install --prefix="/install" -r requirements.txt
 
 FROM base
+
+WORKDIR /loadgen
+
 COPY --from=builder /install /usr/local
 
-COPY . .
-RUN chmod +x ./loadgen.sh
-RUN apt-get -qq update \
-    && apt-get install -y --no-install-recommends \
-        curl
-ENTRYPOINT ./loadgen.sh
+# Add application code.
+COPY locustfile.py .
+
+# enable gevent support in debugger
+ENV GEVENT_SUPPORT=True
+
+ENTRYPOINT locust --host="http://${FRONTEND_ADDR}" --headless -u "${USERS:-10}" 2>&1
