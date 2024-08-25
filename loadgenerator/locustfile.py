@@ -16,10 +16,8 @@
 
 import random
 from locust import FastHttpUser, TaskSet, between, constant
-from faker import Faker
 import datetime
 import os
-fake = Faker()
 
 def index(l):
     l.client.get(os.getenv('APP_ROUTE'))
