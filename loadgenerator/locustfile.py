@@ -14,11 +14,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import random, os
-from locust import HttpUser, TaskSet, between, constant
+import random
+from locust import FastHttpUser, TaskSet, between, constant
+from faker import Faker
+import datetime
+import os
+fake = Faker()
 
 def index(l):
     l.client.get(os.getenv('APP_ROUTE'))
+
 
 class UserBehavior(TaskSet):
 
@@ -27,6 +32,6 @@ class UserBehavior(TaskSet):
 
     tasks = {index: 1}
 
-class WebsiteUser(HttpUser):
+class WebsiteUser(FastHttpUser):
     tasks = [UserBehavior]
     wait_time = constant(1)
