@@ -16,7 +16,7 @@ spec:
       containers:
       - name: hello-logging-container
         # Replace $PROJECT with your project ID
-        image: us-docker.pkg.dev/$PROJECT/demos/hello-operations-demo:latest
+        image: gcr.io/$DEVSHELL_PROJECT_ID/hello-logging-js:latest
         # This app listens on port 8080 for web traffic by default.
         ports:
         - containerPort: 8080
